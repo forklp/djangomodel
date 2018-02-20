@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template.loader import get_template
-from django.template import RequestContext
-from mysite import models
+from django.template import RequestContext, Context
+from mysite import models, forms
+from django.core.mail import EmailMessage
 # Create your views here.
 
 def index(request):
@@ -30,9 +31,32 @@ def form(request):
     return HttpResponse(html)
 
 def posting(request):
-    template = get_template('posting.html')
+
     products = models.Product.objects.all()
-    request_context = RequestContext(request)
-    request_context.push(locals())
-    html = template.render(request_context)
-    return HttpResponse(html)
+    return render(request, 'posting.html', Context(locals()))
+
+def contact(request):
+    if request.method == 'POST':
+        form = forms.ContactForm(request.POST)
+        if form.is_valid():
+            message = '感谢来信'
+            user_name = form.cleaned_data['user_name']
+            user_city = form.cleaned_data['user_city']
+            user_school = form.cleaned_data['user_school']
+            user_email = form.cleaned_data['user_email']
+            user_message = form.cleaned_data['user_message']
+
+            mail_body = u'''
+            网友姓名:{}
+            居住城市:{}
+            是否在学:{}
+            反映意见如下:{}
+            '''.format(user_name, user_city, user_school, user_message)
+            email = EmailMessage('来自网友', mail_body, user_email, ['k1637108208@aliyun.com'])
+            email.send()
+        else:
+            message = '请检查输入'
+    else:
+        form = forms.ContactForm()
+
+    return render(request,'contact.html', Context(locals()))
