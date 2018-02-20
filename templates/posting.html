@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>posting</title>
+</head>
+<body>
+{% for product in products %}
+{{ product.nickname }}
+{% endfor %}
+<form name="postform" action="." method="POST">
+    {% csrf_token %}
+    <label for="user_id">账号</label>
+    <input id="user_id" type="text" name="user_id">
+    <input type="submit", value="提交">
+</form>
+
+</body>
+</html>

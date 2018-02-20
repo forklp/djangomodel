@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template.loader import get_template
+from django.template import RequestContext
 from mysite import models
 # Create your views here.
 
@@ -26,4 +27,12 @@ def form(request):
         verified = False
     years = range(1960, 2021)
     html = template.render(locals())
+    return HttpResponse(html)
+
+def posting(request):
+    template = get_template('posting.html')
+    products = models.Product.objects.all()
+    request_context = RequestContext(request)
+    request_context.push(locals())
+    html = template.render(request_context)
     return HttpResponse(html)
