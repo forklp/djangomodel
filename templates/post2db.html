@@ -2,17 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>联系</title>
+    <title>modelform</title>
 </head>
 <body>
 <form name="my form" action="." method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
+    <table>
+        {{ product_form }}
+    </table>
     <input type="submit" value="提交">
+    <input type="reset" value="清除">
 </form>
-{% if message %}
-    {{ user_name }}
-    {{ user_email }}
-{% endif %}
 </body>
 </html>

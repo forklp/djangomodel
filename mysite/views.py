@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import RequestContext, Context
 from mysite import models, forms
@@ -46,17 +46,23 @@ def contact(request):
             user_email = form.cleaned_data['user_email']
             user_message = form.cleaned_data['user_message']
 
-            mail_body = u'''
-            网友姓名:{}
-            居住城市:{}
-            是否在学:{}
-            反映意见如下:{}
-            '''.format(user_name, user_city, user_school, user_message)
-            email = EmailMessage('来自网友', mail_body, user_email, ['k1637108208@aliyun.com'])
-            email.send()
+            # mail_body = u'''
+            # 网友姓名:{}
+            # 居住城市:{}
+            # 是否在学:{}
+            # 反映意见如下:{}
+            # '''.format(user_name, user_city, user_school, user_message)
+            # email = EmailMessage('来自网友', mail_body, user_email, ['k1637108208@aliyun.com'])
+            # email.send()
+            return HttpResponseRedirect('/index/')
         else:
             message = '请检查输入'
     else:
         form = forms.ContactForm()
 
     return render(request,'contact.html', Context(locals()))
+
+def post2db(request):
+    product_form = forms.ProductForm()
+    pmodels = models.PModel.objects.all()
+    return render(request, 'post2db.html', Context(locals()))
