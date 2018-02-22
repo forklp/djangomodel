@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from mysite.views import index, form, posting,contact,post2db
+from mysite.views import index, form, posting,contact,post2db, setcookie, testcookie, logout
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -25,5 +25,8 @@ urlpatterns = [
     url(r'^posting/$',posting),
     url(r'^contact/$', contact),
     url(r'^post2db/$', post2db),
+    url(r'^setcookie/$', setcookie),
+    url(r'^testcookie/$', testcookie),
+    url(r'^logout/$', logout),
 
 ]

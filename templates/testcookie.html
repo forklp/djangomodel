@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>testcookie</title>
+</head>
+<body>
+{% if username %}
+<h1>已经登录</h1>
+{% else %}
+<h2>请登录</h2>
+{% endif %}
+<a href="/setcookie">setcookie</a>
+<a href="/logout">登出</a>
+</body>
+</html>

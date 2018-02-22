@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import RequestContext, Context
@@ -33,7 +33,9 @@ def form(request):
 def posting(request):
 
     products = models.Product.objects.all()
-    return render(request, 'posting.html', Context(locals()))
+    html = render(request, 'posting.html', Context(locals()))
+    return HttpResponse(html)
+
 
 def contact(request):
     if request.method == 'POST':
@@ -66,3 +68,26 @@ def post2db(request):
     product_form = forms.ProductForm()
     pmodels = models.PModel.objects.all()
     return render(request, 'post2db.html', Context(locals()))
+
+def setcookie(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+    html = render(request, 'setcookie.html', Context(locals()))
+    response = HttpResponse(html)
+    try:
+        if username:
+            response.set_cookie('username', username)
+    except:
+        pass
+    return response
+
+def testcookie(request):
+    if 'username' in request.COOKIES:
+        username = request.COOKIES['username']
+
+    return render(request, 'testcookie.html', Context(locals()))
+
+def logout(request):
+    response = redirect('/testcookie')
+    response.delete_cookie('username')
+    return response
